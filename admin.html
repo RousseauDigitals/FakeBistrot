@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Espace Restaurateur</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #f5f5f5;
+  margin: 0;
+}
+
+header {
+  background: #1A1008;
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+}
+
+.container {
+  padding: 2rem;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 6px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+h2 {
+  margin-bottom: 1rem;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+button {
+  padding: 0.6rem 1.2rem;
+  background: #C8860A;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>🧑‍🍳 Espace Restaurateur</header>
+
+<div class="container">
+
+<!-- 📅 PLANNING -->
+<div class="card">
+  <h2>📅 Réservations</h2>
+  <ul id="reservations-list">
+    <li>Marie Dupont - 12/05 - 20h - 2 pers</li>
+  </ul>
+</div>
+
+<!-- 🍽️ MODIFIER LES PLATS -->
+<div class="card">
+  <h2>🍽️ Modifier les plats</h2>
+
+  <input type="text" id="plat-nom" placeholder="Nom du plat">
+  <textarea id="plat-desc" placeholder="Description"></textarea>
+  <input type="text" id="plat-prix" placeholder="Prix">
+
+  <button onclick="ajouterPlat()">Ajouter / Modifier</button>
+
+  <ul id="liste-plats"></ul>
+</div>
+
+<!-- 🖼️ MODIFIER LES IMAGES -->
+<div class="card">
+  <h2>🖼️ Modifier les photos</h2>
+  <input type="file">
+  <button>Uploader</button>
+</div>
+
+</div>
+
+<script>
+let plats = [];
+
+function ajouterPlat() {
+  const nom = document.getElementById('plat-nom').value;
+  const desc = document.getElementById('plat-desc').value;
+  const prix = document.getElementById('plat-prix').value;
+
+  plats.push({ nom, desc, prix });
+
+  afficherPlats();
+}
+
+function afficherPlats() {
+  const liste = document.getElementById('liste-plats');
+  liste.innerHTML = '';
+
+  plats.forEach(p => {
+    const li = document.createElement('li');
+    li.innerHTML = `${p.nom} - ${p.prix}€`;
+    liste.appendChild(li);
+  });
+}
+</script>
+
+</body>
+</html>
