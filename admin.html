@@ -1,115 +1,334 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Espace Restaurateur</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration — Le Bistrot Fictif</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root { --cream: #F5F0E8; --dark: #1A1008; --gold: #D4A017; --border: rgba(26, 16, 8, 0.15); }
+        body { font-family: 'DM Sans', sans-serif; background: #FAF7F2; color: var(--dark); margin: 0; padding-bottom: 50px; }
+        header { background: var(--dark); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); }
+        .logo { font-family: 'Playfair Display'; color: var(--gold); text-decoration: none; font-size: 1.2rem; }
+        .container { max-width: 1100px; margin: 2rem auto; padding: 0 20px; }
+        
+        h2 { font-family: 'Playfair Display'; border-bottom: 1px solid var(--gold); padding-bottom: 10px; margin-top: 40px; }
 
-<style>
-body {
-  font-family: Arial;
-  background: #f5f5f5;
-  margin: 0;
+        /* Style des inputs dans l'admin */
+        input, select, textarea { 
+            width: 100%; padding: 10px; margin: 5px 0; border: 1px solid var(--border); 
+            font-family: 'DM Sans'; box-sizing: border-box;
+        }
+
+        /* Grid Plats Modifiables */
+        .grid-plats { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+        .card-plat { background: white; border: 1px solid var(--border); padding: 15px; }
+        
+        /* Correction du dimensionnement des images */
+        .img-preview { 
+            width: 100%; 
+            height: 180px; 
+            object-fit: cover; /* Assure que l'image remplit l'espace sans se déformer */
+            background: #eee; 
+            margin-bottom: 10px; 
+            display: block; 
+            border-radius: 4px;
+        }
+
+        /* Planning */
+        table { width: 100%; border-collapse: collapse; background: white; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        th { background: var(--dark); color: var(--gold); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
+
+        .btn { background: var(--dark); color: var(--gold); border: 1px solid var(--gold); padding: 10px 20px; cursor: pointer; transition: 0.3s; }
+        .btn:hover { background: var(--gold); color: white; }
+        .btn-save { background: #27ae60; color: white; border: none; margin-top: 10px; width: 100%; }
+        
+        .no-tel { color: #999; font-style: italic; }
+		.admin-title{
+  font-size:1.2rem;
+  letter-spacing:0.5px;
+  margin-bottom:12px;
+  color:var(--text);
 }
 
-header {
-  background: #1A1008;
-  color: white;
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
+/* TITRE CENTRÉ */
+.admin-title{
+  text-align:center;
+  font-size:1.3rem;
+  margin-bottom:14px;
+  color:var(--text);
+  letter-spacing:0.5px;
 }
 
-.container {
-  padding: 2rem;
+/* BAR UNE LIGNE SANS SCROLL */
+.admin-inline-bar{
+  display:flex;
+  flex-wrap:nowrap;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+
+  padding:12px;
+  border-radius:12px;
+
+  background: linear-gradient(145deg, #1b1b1b, #111);
+  border:1px solid rgba(212,175,55,0.25);
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+
+  max-width:100%;
 }
 
-.card {
-  background: white;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  border-radius: 6px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+/* INPUTS PLUS PETITS */
+.admin-input{
+  background: rgba(255,255,255,0.05);
+  border:1px solid rgba(212,175,55,0.25);
+  color:#f5f0e8;
+
+  padding:6px 8px;          /* 👈 réduit */
+  border-radius:6px;
+  font-size:0.78rem;        /* 👈 réduit */
+
+  outline:none;
+
+  width:120px;              /* 👈 fixe pour éviter slide */
+  flex:0 0 auto;
 }
 
-h2 {
-  margin-bottom: 1rem;
+/* champs spécifiques plus adaptés */
+#resa-prenom, #resa-nom{
+  width:110px;
 }
 
-input, textarea {
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
+#resa-tel{
+  width:130px;
 }
 
-button {
-  padding: 0.6rem 1.2rem;
-  background: #C8860A;
-  color: white;
-  border: none;
-  cursor: pointer;
+#resa-couverts{
+  width:90px;
+
+  background: rgba(212,175,55,0.08); /* léger doré au lieu de gris */
+  border:1px solid rgba(212,175,55,0.6); /* plus visible */
+  color:#f5f0e8;
+
+  font-weight:500;
 }
-</style>
+
+/* focus luxe */
+.admin-input:focus{
+  border-color:#d4af37;
+  box-shadow:0 0 0 2px rgba(212,175,55,0.15);
+}
+
+/* bouton compact */
+.admin-btn{
+  padding:7px 12px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+
+  background: linear-gradient(90deg, #d4af37, #f2d57e);
+  color:#111;
+  font-weight:600;
+  font-size:0.8rem;
+
+  flex:0 0 auto;
+  transition:0.2s ease;
+}
+
+.admin-btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 8px 18px rgba(212,175,55,0.25);
+}
+#resa-couverts option{
+  background: #111;
+  color: #f5f0e8;
+}
+
+#resa-couverts option:checked,
+#resa-couverts option:hover{
+  background: rgba(212,175,55,0.25);
+  color: #fff;
+}
+    </style>
 </head>
-
 <body>
 
-<header>🧑‍🍳 Espace Restaurateur</header>
+<header>
+    <a href="index.html" class="logo">LE BISTROT FICTIF — ADMIN</a>
+    <button class="btn" onclick="location.reload()">Actualiser</button>
+</header>
+<h2 class="admin-title">Ajouter une réservation</h2>
 
+<div class="admin-inline-bar">
+
+  <input type="date" id="resa-date" class="admin-input">
+  <input type="time" id="resa-heure" class="admin-input">
+
+  <input type="text" id="resa-prenom" placeholder="Prénom" class="admin-input">
+  <input type="text" id="resa-nom" placeholder="Nom" class="admin-input">
+  <input type="text" id="resa-tel" placeholder="Téléphone" class="admin-input">
+
+  <select id="resa-couverts" class="admin-input">
+  <option value="" disabled selected>Couverts</option>
+</select>
+
+  <button class="admin-btn" onclick="addResa()">Ajouter</button>
+
+</div>
 <div class="container">
+    
+    <h2>Planning des Réservations</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date / Heure</th>
+                <th>Client</th>
+                <th>Téléphone</th>
+                <th>Couverts</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="resas-body"></tbody>
+    </table>
 
-<!-- 📅 PLANNING -->
-<div class="card">
-  <h2>📅 Réservations</h2>
-  <ul id="reservations-list">
-    <li>Marie Dupont - 12/05 - 20h - 2 pers</li>
-  </ul>
-</div>
-
-<!-- 🍽️ MODIFIER LES PLATS -->
-<div class="card">
-  <h2>🍽️ Modifier les plats</h2>
-
-  <input type="text" id="plat-nom" placeholder="Nom du plat">
-  <textarea id="plat-desc" placeholder="Description"></textarea>
-  <input type="text" id="plat-prix" placeholder="Prix">
-
-  <button onclick="ajouterPlat()">Ajouter / Modifier</button>
-
-  <ul id="liste-plats"></ul>
-</div>
-
-<!-- 🖼️ MODIFIER LES IMAGES -->
-<div class="card">
-  <h2>🖼️ Modifier les photos</h2>
-  <input type="file">
-  <button>Uploader</button>
-</div>
+    <h2>Modifier les Plats Signatures</h2>
+    <div id="plats-list" class="grid-plats"></div>
 
 </div>
 
 <script>
-let plats = [];
+    let plats = JSON.parse(localStorage.getItem('plats_jour')) || [];
+    let resas = JSON.parse(localStorage.getItem('reservations_data')) || [];
 
-function ajouterPlat() {
-  const nom = document.getElementById('plat-nom').value;
-  const desc = document.getElementById('plat-desc').value;
-  const prix = document.getElementById('plat-prix').value;
+    // --- RENDU DES PLATS AVEC MODIFICATION TEXTE ---
+    function renderPlats() {
+        const container = document.getElementById('plats-list');
+        if (plats.length === 0) {
+            container.innerHTML = "<p>Aucun plat configuré. Ils apparaîtront ici une fois initialisés sur l'index.</p>";
+            return;
+        }
+        container.innerHTML = plats.map((p, i) => `
+            <div class="card-plat">
+                <img src="${p.img}" class="img-preview" id="prev-${i}" alt="Aperçu plat">
+                <input type="file" onchange="updateImage(event, ${i})" style="font-size: 0.7rem">
+                
+                <label>Nom du plat :</label>
+                <input type="text" value="${p.nom}" id="nom-${i}" placeholder="Ex: Entrecôte grillée">
+                
+                <label>Prix (€) :</label>
+                <input type="text" value="${p.prix}" id="prix-${i}" placeholder="Ex: 24">
+                
+                <label>Description :</label>
+                <textarea id="desc-${i}" rows="3" placeholder="Description du plat...">${p.desc}</textarea>
+                
+                <button class="btn btn-save" onclick="savePlat(${i})">Enregistrer les modifs</button>
+            </div>
+        `).join('');
+    }
 
-  plats.push({ nom, desc, prix });
+    function savePlat(i) {
+        plats[i].nom = document.getElementById(`nom-${i}`).value;
+        plats[i].prix = document.getElementById(`prix-${i}`).value;
+        plats[i].desc = document.getElementById(`desc-${i}`).value;
+        
+        localStorage.setItem('plats_jour', JSON.stringify(plats));
+        alert("Modifications enregistrées !");
+        renderPlats();
+    }
 
-  afficherPlats();
+    function updateImage(event, i) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = 1000; canvas.height = 700; // Format fixe professionnel
+                const ctx = canvas.getContext('2d');
+                
+                // Calcul du ratio pour l'effet "cover" (remplissage sans déformation)
+                const ratio = Math.max(canvas.width / img.width, canvas.height / img.height);
+                const x = (canvas.width - img.width * ratio) / 2;
+                const y = (canvas.height - img.height * ratio) / 2;
+                
+                ctx.fillStyle = "#FFFFFF";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, x, y, img.width * ratio, img.height * ratio);
+                
+                plats[i].img = canvas.toDataURL('image/jpeg', 0.8);
+                document.getElementById(`prev-${i}`).src = plats[i].img;
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // --- RENDU DU PLANNING ---
+    function renderPlanning() {
+        const body = document.getElementById('resas-body');
+        
+        // Tri par date et heure
+        resas.sort((a,b) => new Date(a.date + 'T' + a.heure) - new Date(b.date + 'T' + b.heure));
+        
+        body.innerHTML = resas.map((r, i) => {
+            // Sécurité pour le numéro de téléphone undefined
+            const displayTel = r.tel && r.tel !== "undefined" ? r.tel : "Non renseigné";
+            const telLink = r.tel && r.tel !== "undefined" ? `<a href="tel:${r.tel}">${r.tel}</a>` : `<span class="no-tel">${displayTel}</span>`;
+
+            return `
+                <tr>
+                    <td>${r.date} à <strong>${r.heure}</strong></td>
+                    <td>${r.prenom} ${r.nom ? r.nom.toUpperCase() : ''}</td>
+                    <td>${telLink}</td>
+                    <td>${r.couverts} pers.</td>
+                    <td><button onclick="deleteResa(${i})" style="color:red; border:none; background:none; cursor:pointer;">Supprimer</button></td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function deleteResa(i) {
+        if(confirm("Voulez-vous vraiment supprimer cette réservation ?")) {
+            resas.splice(i, 1);
+            localStorage.setItem('reservations_data', JSON.stringify(resas));
+            renderPlanning();
+        }
+    }
+
+    // Initialisation au chargement
+    renderPlats();
+    renderPlanning();
+	// Générer les couverts (1 à 12)
+const selectCouverts = document.getElementById("resa-couverts");
+for(let i = 1; i <= 12; i++) {
+    selectCouverts.innerHTML += `<option value="${i}">${i} couvert${i>1?'s':''}</option>`;
 }
 
-function afficherPlats() {
-  const liste = document.getElementById('liste-plats');
-  liste.innerHTML = '';
+// Ajouter réservation
+function addResa() {
+    const resa = {
+        date: document.getElementById('resa-date').value,
+        heure: document.getElementById('resa-heure').value,
+        prenom: document.getElementById('resa-prenom').value,
+        nom: document.getElementById('resa-nom').value,
+        tel: document.getElementById('resa-tel').value,
+        couverts: document.getElementById('resa-couverts').value
+    };
 
-  plats.forEach(p => {
-    const li = document.createElement('li');
-    li.innerHTML = `${p.nom} - ${p.prix}€`;
-    liste.appendChild(li);
-  });
+    if(!resa.date || !resa.heure || !resa.prenom) {
+        alert("Merci de remplir les champs obligatoires");
+        return;
+    }
+
+    resas.push(resa);
+    localStorage.setItem('reservations_data', JSON.stringify(resas));
+
+    renderPlanning();
+    alert("Réservation ajoutée !");
 }
 </script>
-
 </body>
 </html>
