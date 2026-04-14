@@ -150,9 +150,59 @@
   background: rgba(212,175,55,0.25);
   color: #fff;
 }
+.admin-login{
+  max-width:300px;
+  margin:80px auto;
+  padding:20px;
+  text-align:center;
+
+  background: linear-gradient(145deg, #1b1b1b, #111);
+  border:1px solid rgba(212,175,55,0.25);
+  border-radius:12px;
+  color:#f5f0e8;
+}
+
+.admin-login input{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+
+  background: rgba(255,255,255,0.05);
+  border:1px solid rgba(212,175,55,0.25);
+  color:#fff;
+  border-radius:6px;
+}
+
+.admin-login button{
+  margin-top:10px;
+  width:100%;
+  padding:10px;
+
+  background: linear-gradient(90deg, #d4af37, #f2d57e);
+  border:none;
+  border-radius:6px;
+  font-weight:600;
+  cursor:pointer;
+}
     </style>
 </head>
 <body>
+<div id="admin-login" class="admin-login">
+
+  <h2>Accès Admin</h2>
+
+  <input type="password" id="admin-pass" placeholder="Mot de passe">
+
+  <button onclick="checkAdmin()">Se connecter</button>
+
+  <p id="login-error" style="color:red; display:none; margin-top:10px;">
+    Mot de passe incorrect
+  </p>
+
+</div>
+
+<div id="admin-panel" style="display:none;">
+  <!-- 👉 ICI tu mets ton interface admin actuelle -->
 
 <header>
     <a href="index.html" class="logo">LE BISTROT FICTIF — ADMIN</a>
@@ -224,6 +274,7 @@
                 
                 <button class="btn btn-save" onclick="savePlat(${i})">Enregistrer les modifs</button>
             </div>
+</div>
         `).join('');
     }
 
@@ -328,6 +379,18 @@ function addResa() {
 
     renderPlanning();
     alert("Réservation ajoutée !");
+}
+function checkAdmin(){
+  const pass = document.getElementById('admin-pass').value;
+
+  const correctPassword = "admin123"; // 👉 change ici ton mdp
+
+  if(pass === correctPassword){
+    document.getElementById('admin-login').style.display = "none";
+    document.getElementById('admin-panel').style.display = "block";
+  } else {
+    document.getElementById('login-error').style.display = "block";
+  }
 }
 </script>
 </body>
