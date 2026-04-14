@@ -1091,29 +1091,43 @@
 </section>
 
 <script>
-function loadPlats() {
+async function loadPlats() {
   const container = document.getElementById('plats-dynamiques');
-  const plats = JSON.parse(localStorage.getItem('plats_jour')) || [];
+  try {
+    const res = await fetch('/.netlify/functions/get-data');
+    if (!res.ok) throw new Error('Erreur réseau');
+    const data = await res.json();
+    const plats = data.plats || [];
 
-  if (plats.length === 0) return;
+    if (plats.length === 0) return;
+    container.innerHTML = '';
 
-  container.innerHTML = '';
+    const gradients = [
+      'linear-gradient(135deg, #3D2416, #6B3A20)',
+      'linear-gradient(135deg, #1A2C1A, #2E4A2E)',
+      'linear-gradient(135deg, #2C2416, #4A3E20)'
+    ];
 
-  plats.forEach(p => {
-    container.innerHTML += `
-      <div class="plat-card">
-        <div class="plat-card-img">
-  <img src="${p.img}" alt="${p.nom}">
-</div>
-        <div class="plat-card-body">
-          <span class="plat-badge">${p.badge || ''}</span>
-          <p class="plat-name">${p.nom}</p>
-          <p class="plat-desc">${p.desc}</p>
-          <p class="plat-price">${p.prix} €</p>
+    plats.forEach((p, i) => {
+      const imgContent = p.img
+        ? `<img src="${p.img}" alt="${p.nom}" style="width:100%;height:100%;object-fit:cover;">`
+        : `<div style="width:100%;height:100%;background:${gradients[i % gradients.length]};display:flex;align-items:center;justify-content:center;font-size:3.5rem;">🍽️</div>`;
+
+      container.innerHTML += `
+        <div class="plat-card">
+          <div class="plat-card-img">${imgContent}</div>
+          <div class="plat-card-body">
+            <span class="plat-badge">Plat du moment</span>
+            <p class="plat-name">${p.nom}</p>
+            <p class="plat-desc">${p.desc}</p>
+            <p class="plat-price">${p.prix} €</p>
+          </div>
         </div>
-      </div>
-    `;
-  });
+      `;
+    });
+  } catch(e) {
+    console.error('Impossible de charger les plats :', e);
+  }
 }
 
 loadPlats();
@@ -1658,40 +1672,43 @@ function switchTab(id, btn) {
   btn.classList.add('active');
 }
 
-function submitResa() {
-  // Récupération des valeurs
+async function submitResa() {
   const prenom = document.getElementById('f-prenom').value;
   const nom = document.getElementById('f-nom').value;
-  const tel = document.getElementById('f-tel').value; // Ajouté pour corriger le "undefined"
+  const tel = document.getElementById('f-tel').value;
+  const email = document.getElementById('f-email').value;
   const date = document.getElementById('f-date').value;
   const heure = document.getElementById('f-heure').value;
   const couverts = document.getElementById('couverts').value;
 
-  // Validation simple
   if (!prenom || !nom || !tel || !date || !heure) {
     alert('Merci de remplir tous les champs, y compris votre numéro de téléphone.');
     return;
   }
 
-  // Récupération des données existantes
-  const resas = JSON.parse(localStorage.getItem('reservations_data')) || [];
+  try {
+    // Récupérer les données actuelles
+    const res = await fetch('/.netlify/functions/get-data');
+    const data = await res.json();
 
-  resas.push({ 
-  id: Date.now(), 
-  prenom, 
-  nom, 
-  tel,
-  date, 
-  heure, 
-  couverts 
-});
+    data.reservations = data.reservations || [];
+    data.reservations.push({ id: Date.now(), prenom, nom, tel, email, date, heure, couverts });
 
-  // Sauvegarde
-  localStorage.setItem('reservations_data', JSON.stringify(resas));
+    // Sauvegarder (pas de secret côté client pour les réservations publiques — on utilise un token séparé)
+    const saveRes = await fetch('/.netlify/functions/save-resa', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prenom, nom, tel, email, date, heure, couverts, id: Date.now() }),
+    });
 
-  // Feedback visuel
-  document.getElementById('form-fields').style.display = 'none';
-  document.getElementById('form-success').style.display = 'block';
+    if (!saveRes.ok) throw new Error('Erreur sauvegarde');
+
+    document.getElementById('form-fields').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  } catch(e) {
+    alert('Une erreur est survenue. Veuillez réessayer ou nous appeler directement.');
+    console.error(e);
+  }
 }
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
