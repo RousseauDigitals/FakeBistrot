@@ -980,6 +980,37 @@
     .gal-img:first-child { grid-column: 1 / 3; }
     .gal-img:nth-child(5) { grid-column: 1 / 3; }
   }
+/* Force les images des plats à garder un ratio propre sans déformation */
+.plat-card-img {
+    width: 100%;
+    height: 250px; /* Hauteur fixe pour l'alignement */
+    overflow: hidden;
+    position: relative;
+}
+
+.plat-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Recadre l'image pour remplir le cadre */
+    transition: transform 0.5s ease;
+}
+
+.plat-card:hover img {
+    transform: scale(1.05); /* Petit effet de zoom au survol */
+}
+.badge-jaune {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #D4A017; /* Votre couleur --gold */
+    color: white;
+    padding: 5px 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    z-index: 2;
+    border-radius: 2px;
+}
 </style>
 </head>
 <body>
@@ -988,7 +1019,7 @@
 <nav id="main-nav">
   <a href="#accueil" class="nav-logo">Le Bistrot <span>Fictif</span></a>
   <ul class="nav-links" id="nav-links">
-    <li><a href="admin.html">Espace Pro</a></li>
+	<li><a href="admin.html">Espace Pro</a></li>
     <li><a href="#concept">Le concept</a></li>
     <li><a href="#carte">Notre carte</a></li>
     <li><a href="#restaurant">Le restaurant</a></li>
@@ -1050,45 +1081,43 @@
   </div>
 </section>
 
-<!-- PLATS PHARES -->
+<!-- PLATS DU MOMENT -->
 <section id="plats-phares">
   <div class="container">
-    <div class="reveal" style="text-align:center">
-      <span class="section-label">Sélection du chef</span>
-      <h2 class="section-title" style="color:var(--cream)">Les plats du moment</h2>
-      <div class="section-divider center"></div>
-    </div>
-    <div class="plats-grid">
-      <div class="plat-card reveal">
-        <div class="plat-card-img img1">🥩</div>
-        <div class="plat-card-body">
-          <span class="plat-badge">Plat signature</span>
-          <p class="plat-name">Filet de bœuf Rossini</p>
-          <p class="plat-desc">Bœuf charolais, escalope de foie gras poêlée, truffe noire, jus corsé au Madère</p>
-          <p class="plat-price">38 €</p>
-        </div>
-      </div>
-      <div class="plat-card reveal" style="transition-delay:0.15s">
-        <div class="plat-card-img img2">🐟</div>
-        <div class="plat-card-body">
-          <span class="plat-badge">Nouveauté</span>
-          <p class="plat-name">Saint-Jacques rôties</p>
-          <p class="plat-desc">Noix de Saint-Jacques, velouté de topinambour, huile de truffe blanche, chapelure dorée</p>
-          <p class="plat-price">32 €</p>
-        </div>
-      </div>
-      <div class="plat-card reveal" style="transition-delay:0.3s">
-        <div class="plat-card-img img3">🍰</div>
-        <div class="plat-card-body">
-          <span class="plat-badge">Dessert phare</span>
-          <p class="plat-name">Soufflé Grand Marnier</p>
-          <p class="plat-desc">Soufflé chaud à l'orange, sorbet mandarine, tuile caramélisée aux agrumes</p>
-          <p class="plat-price">14 €</p>
-        </div>
-      </div>
-    </div>
+    <h2 class="section-title" style="text-align:center;color:white;">Les plats du moment</h2>
+
+    <div class="plats-grid" id="plats-dynamiques"></div>
   </div>
 </section>
+
+<script>
+function loadPlats() {
+  const container = document.getElementById('plats-dynamiques');
+  const plats = JSON.parse(localStorage.getItem('plats_jour')) || [];
+
+  if (plats.length === 0) return;
+
+  container.innerHTML = '';
+
+  plats.forEach(p => {
+    container.innerHTML += `
+      <div class="plat-card">
+        <div class="plat-card-img">
+  <img src="${p.img}" alt="${p.nom}">
+</div>
+        <div class="plat-card-body">
+          <span class="plat-badge">${p.badge || ''}</span>
+          <p class="plat-name">${p.nom}</p>
+          <p class="plat-desc">${p.desc}</p>
+          <p class="plat-price">${p.prix} €</p>
+        </div>
+      </div>
+    `;
+  });
+}
+
+loadPlats();
+</script>
 
 <!-- CARTE -->
 <section id="carte">
@@ -1480,9 +1509,9 @@
             </div>
             <div class="form-row">
               <div class="form-group">
-                <label>Téléphone</label>
-                <input type="tel" placeholder="+33 6 00 00 00 00" id="f-tel">
-              </div>
+          <label>Téléphone</label>
+          <input type="tel" id="f-tel" placeholder="06 12 34 56 78" required>
+        </div>
               <div class="form-group">
                 <label>E-mail</label>
                 <input type="email" placeholder="marie@email.com" id="f-email">
@@ -1508,28 +1537,16 @@
                 </select>
               </div>
             </div>
-            <div class="form-group">
-              <label>Nombre de couverts</label>
-              <select id="f-couverts">
-                <option>1 personne</option>
-                <option>2 personnes</option>
-                <option selected>3 personnes</option>
-                <option>4 personnes</option>
-                <option>5 personnes</option>
-                <option>6 personnes</option>
-                <option>7 personnes ou plus – nous contacter</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Message (allergies, occasion spéciale…)</label>
-              <textarea placeholder="Anniversaire, allergie aux fruits à coque, table en terrasse..."></textarea>
-            </div>
+			<div class="form-group">
+				<label>Nombre de couverts</label>
+				<select id="couverts" required></select>
+			</div>
             <button class="btn-primary form-submit" onclick="submitResa()">Confirmer la réservation</button>
           </div>
           <div class="form-success" id="form-success">
             <div class="check">✓</div>
             <h4>Réservation confirmée !</h4>
-            <p>Un e-mail de confirmation vous a été envoyé. Nous avons hâte de vous accueillir.</p>
+            <p>Nous avons hâte de vous accueillir.</p>
           </div>
         </div>
       </div>
@@ -1624,6 +1641,11 @@
 </footer>
 
 <script>
+const couvertsSelect = document.getElementById("couverts");
+
+for (let i = 1; i <= 10; i++) {
+  couvertsSelect.innerHTML += `<option value="${i}">${i} couvert${i > 1 ? "s" : ""}</option>`;
+}
 function toggleNav() {
   const links = document.getElementById('nav-links');
   links.classList.toggle('open');
@@ -1637,18 +1659,40 @@ function switchTab(id, btn) {
 }
 
 function submitResa() {
+  // Récupération des valeurs
   const prenom = document.getElementById('f-prenom').value;
   const nom = document.getElementById('f-nom').value;
+  const tel = document.getElementById('f-tel').value; // Ajouté pour corriger le "undefined"
   const date = document.getElementById('f-date').value;
   const heure = document.getElementById('f-heure').value;
-  if (!prenom || !nom || !date || !heure) {
-    alert('Merci de remplir au moins votre nom, prénom, la date et l\'heure.');
+  const couverts = document.getElementById('couverts').value;
+
+  // Validation simple
+  if (!prenom || !nom || !tel || !date || !heure) {
+    alert('Merci de remplir tous les champs, y compris votre numéro de téléphone.');
     return;
   }
+
+  // Récupération des données existantes
+  const resas = JSON.parse(localStorage.getItem('reservations_data')) || [];
+
+  resas.push({ 
+  id: Date.now(), 
+  prenom, 
+  nom, 
+  tel,
+  date, 
+  heure, 
+  couverts 
+});
+
+  // Sauvegarde
+  localStorage.setItem('reservations_data', JSON.stringify(resas));
+
+  // Feedback visuel
   document.getElementById('form-fields').style.display = 'none';
   document.getElementById('form-success').style.display = 'block';
 }
-
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
