@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Le Bistrot Fictif – Cuisine bistronomique raffinée à Paris. Découvrez notre carte, réservez votre table et vivez une expérience culinaire mémorable.">
+<title>Le Bistrot Fictif – Restaurant Bistronomique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --warm-white: #FAF7F2;
+    --dark-brown: #1A1008;
+    --rich-brown: #2C1A0E;
+    --mid-brown: #5C3D2E;
+    --amber: #C8860A;
+    --gold: #D4A017;
+    --rust: #A64B2A;
+    --sage: #6B7C5C;
+    --text-main: #1A1008;
+    --text-muted: #7A6555;
+    --border: rgba(90,60,40,0.15);
+    --nav-h: 72px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--text-main);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  h1,h2,h3,h4,h5 {
+    font-family: 'Playfair Display', serif;
+    line-height: 1.2;
+    font-weight: 600;
+  }
+
+  .serif-light {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    background: rgba(26,16,8,0.96);
+    backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 3rem;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(212,160,23,0.2);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+
+  .nav-logo span {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--cream);
+  }
+
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(245,240,232,0.75);
+    text-decoration: none;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cta {
+    background: var(--amber) !important;
+    color: white !important;
+    padding: 0.5rem 1.25rem !important;
+    border-radius: 2px !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  .nav-cta:hover { background: var(--gold) !important; }
+
+  .nav-burger {
+    display: none;
+    flex-direction: column; gap: 5px; cursor: pointer; padding: 4px;
+  }
+  .nav-burger span {
+    width: 24px; height: 1.5px; background: var(--cream); display: block; transition: all 0.3s;
+  }
+
+  /* ── HERO ── */
+  #accueil {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--dark-brown);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 40%, rgba(200,134,10,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 20% 70%, rgba(166,75,42,0.1) 0%, transparent 60%),
+      linear-gradient(160deg, #1A1008 0%, #2C1A0E 50%, #1A1008 100%);
+  }
+
+  .hero-pattern {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 20px,
+      rgba(212,160,23,0.8) 20px,
+      rgba(212,160,23,0.8) 21px
+    );
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center;
+    padding: 2rem;
+    max-width: 800px;
+    animation: fadeUp 1.2s ease both;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.2s both;
+  }
+
+  .hero-title {
+    font-size: clamp(3.5rem, 9vw, 7rem);
+    color: var(--cream);
+    font-weight: 700;
+    line-height: 1.05;
+    margin-bottom: 0.3rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.4s both;
+  }
+
+  .hero-title em {
+    color: var(--gold);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: rgba(245,240,232,0.65);
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.6s both;
+  }
+
+  .hero-actions {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.8s both;
+  }
+
+  .btn-primary {
+    background: var(--amber);
+    color: white;
+    padding: 0.85rem 2.5rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s;
+    border-radius: 2px;
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-primary:hover { background: var(--gold); transform: translateY(-2px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--cream);
+    padding: 0.85rem 2.5rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+    border: 1px solid rgba(245,240,232,0.35);
+    cursor: pointer;
+    transition: all 0.25s;
+    border-radius: 2px;
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: rgba(245,240,232,0.4);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif;
+    animation: bounce 2s infinite 2s;
+  }
+  .hero-scroll::after {
+    content: '';
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, rgba(212,160,23,0.6), transparent);
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 2rem; }
+
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--amber);
+    font-weight: 400;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--dark-brown);
+    margin-bottom: 1rem;
+  }
+
+  .section-divider {
+    width: 48px; height: 2px;
+    background: var(--amber);
+    margin: 1.25rem 0 2rem;
+  }
+
+  .section-divider.center { margin-left: auto; margin-right: auto; }
+
+  /* ── CONCEPT ── */
+  #concept { background: var(--cream); }
+
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .concept-img {
+    position: relative;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .concept-img-inner {
+    width: 100%;
+    aspect-ratio: 4/5;
+    background: linear-gradient(145deg, #2C1A0E 0%, #5C3D2E 40%, #3D2416 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .concept-img-inner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      -45deg, transparent, transparent 8px,
+      rgba(212,160,23,0.06) 8px, rgba(212,160,23,0.06) 9px
+    );
+  }
+
+  .concept-img-decoration {
+    position: absolute; bottom: -1.5rem; right: -1.5rem;
+    width: 120px; height: 120px;
+    border: 2px solid var(--amber);
+    border-radius: 2px;
+    z-index: -1;
+  }
+
+  .concept-text p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    color: var(--mid-brown);
+    font-weight: 300;
+    margin-bottom: 1.25rem;
+    line-height: 1.8;
+  }
+
+  .concept-stats {
+    display: flex; gap: 2.5rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--amber);
+    font-weight: 600;
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── PLATS DU MOMENT ── */
+  #plats-phares { background: var(--dark-brown); }
+  #plats-phares .section-title { color: var(--cream); }
+  #plats-phares .section-label { color: var(--gold); }
+
+  .plats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .plat-card {
+    background: rgba(245,240,232,0.06);
+    border: 1px solid rgba(212,160,23,0.15);
+    border-radius: 2px;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .plat-card:hover {
+    border-color: rgba(212,160,23,0.5);
+    transform: translateY(-4px);
+    background: rgba(245,240,232,0.09);
+  }
+
+  .plat-card-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .plat-card-img.img1 { background: linear-gradient(135deg, #3D2416, #6B3A20); }
+  .plat-card-img.img2 { background: linear-gradient(135deg, #1A2C1A, #2E4A2E); }
+  .plat-card-img.img3 { background: linear-gradient(135deg, #2C2416, #4A3E20); }
+
+  .plat-card-body { padding: 1.25rem; }
+
+  .plat-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(212,160,23,0.15);
+    color: var(--gold);
+    padding: 0.2rem 0.6rem;
+    border-radius: 1px;
+    margin-bottom: 0.6rem;
+  }
+
+  .plat-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--cream);
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+  }
+
+  .plat-desc {
+    font-size: 0.85rem;
+    color: rgba(245,240,232,0.55);
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .plat-price {
+    margin-top: 1rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  /* ── MENU ── */
+  #carte { background: var(--warm-white); }
+
+  .menu-tabs {
+    display: flex; gap: 0; margin-bottom: 3rem;
+    border-bottom: 2px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .menu-tabs::-webkit-scrollbar { display: none; }
+
+  .menu-tab {
+    padding: 0.85rem 1.75rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .menu-tab:hover { color: var(--amber); }
+  .menu-tab.active { color: var(--amber); border-bottom-color: var(--amber); }
+
+  .menu-category { display: none; }
+  .menu-category.active { display: block; }
+
+  .menu-items {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .menu-item {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 1rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .menu-item-info { flex: 1; }
+
+  .menu-item-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--dark-brown);
+    margin-bottom: 0.25rem;
+  }
+
+  .menu-item-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  .menu-item-badges {
+    display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.4rem;
+  }
+
+  .badge {
+    font-size: 0.65rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 1px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .badge-veg { background: #E8F5E2; color: #2E6B1A; }
+  .badge-sg  { background: #FFF3E0; color: #B05E0A; }
+  .badge-ep  { background: #FCE4E4; color: #A62020; }
+
+  .menu-item-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--amber);
+    font-style: italic;
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+
+  /* ── LE RESTAURANT ── */
+  #restaurant { background: var(--cream); }
+
+  .restaurant-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .histoire-text p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--mid-brown);
+    font-weight: 300;
+    margin-bottom: 1.25rem;
+    line-height: 1.85;
+  }
+
+  .equipe-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  .chef-card {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+
+  .chef-avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    margin: 0 auto 0.75rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+  }
+
+  .chef-avatar.av1 { background: linear-gradient(135deg, #5C3D2E, #2C1A0E); }
+  .chef-avatar.av2 { background: linear-gradient(135deg, #3D5C2E, #1A2C0E); }
+
+  .chef-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--dark-brown);
+    margin-bottom: 0.2rem;
+  }
+  .chef-role { font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .galerie {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 140px 140px;
+    gap: 0.75rem;
+    margin-top: 2.5rem;
+  }
+
+  .gal-img {
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    overflow: hidden;
+  }
+
+  .gal-img:first-child {
+    grid-column: 1 / 3;
+    grid-row: 1;
+    background: linear-gradient(135deg, #2C1A0E, #5C3D2E);
+  }
+  .gal-img:nth-child(2) { background: linear-gradient(135deg, #1A2C1A, #3D5C2E); }
+  .gal-img:nth-child(3) { background: linear-gradient(135deg, #2C2416, #5C4E2E); }
+  .gal-img:nth-child(4) { background: linear-gradient(135deg, #1A1A2C, #3D3D5C); }
+  .gal-img:nth-child(5) {
+    grid-column: 2 / 4;
+    background: linear-gradient(135deg, #2C1A1A, #5C3D3D);
+  }
+
+  /* ── AVIS ── */
+  #avis { background: var(--dark-brown); }
+  #avis .section-title { color: var(--cream); }
+
+  .avis-global {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .avis-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    color: var(--gold);
+    font-weight: 700;
+    line-height: 1;
+  }
+  .avis-stars { font-size: 1.4rem; letter-spacing: 0.1em; }
+  .avis-count { font-size: 0.85rem; color: rgba(245,240,232,0.5); margin-top: 0.2rem; }
+
+  .avis-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
+  }
+
+  .avis-card {
+    background: rgba(245,240,232,0.06);
+    border: 1px solid rgba(212,160,23,0.12);
+    border-radius: 2px;
+    padding: 1.5rem;
+  }
+
+  .avis-header {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .avis-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: rgba(212,160,23,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--gold);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .avis-name {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--cream);
+    display: block;
+  }
+  .avis-date { font-size: 0.75rem; color: rgba(245,240,232,0.4); }
+  .avis-stars-small { font-size: 0.8rem; color: var(--gold); }
+
+  .avis-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: rgba(245,240,232,0.7);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.7;
+  }
+
+  .avis-platform {
+    display: flex; align-items: center; gap: 0.4rem;
+    margin-top: 1rem;
+    font-size: 0.72rem;
+    color: rgba(245,240,232,0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── RÉSERVATION ── */
+  #reservation { background: var(--warm-white); }
+
+  .resa-grid {
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; align-items: start;
+  }
+
+  .resa-info h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--mid-brown);
+    margin-bottom: 2rem;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  .horaires-table { width: 100%; border-collapse: collapse; }
+  .horaires-table tr { border-bottom: 1px solid var(--border); }
+  .horaires-table td { padding: 0.7rem 0; font-size: 0.9rem; }
+  .horaires-table td:first-child { color: var(--text-muted); font-weight: 500; }
+  .horaires-table td:last-child { color: var(--dark-brown); text-align: right; font-family: 'Cormorant Garamond', serif; font-size: 1rem; }
+  .horaires-table .closed td { color: rgba(90,60,40,0.4) !important; }
+
+  .resa-form {
+    background: var(--cream);
+    padding: 2.5rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .form-group { margin-bottom: 1.25rem; }
+
+  .form-group label {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: var(--warm-white);
+    color: var(--text-main);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--amber);
+  }
+
+  .form-group textarea { resize: vertical; min-height: 90px; }
+
+  .form-submit { width: 100%; }
+
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .form-success .check {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(107,124,92,0.12);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 1.5rem;
+    color: var(--sage);
+  }
+
+  .form-success h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--dark-brown);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-success p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+  }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--cream); }
+
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+  }
+
+  .contact-details .item {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .contact-icon {
+    width: 40px; height: 40px; flex-shrink: 0;
+    background: rgba(200,134,10,0.1);
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+
+  .contact-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .contact-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--dark-brown);
+    font-weight: 400;
+    text-decoration: none;
+  }
+
+  a.contact-value:hover { color: var(--amber); }
+
+  .map-placeholder {
+    background: linear-gradient(135deg, #2C1A0E 0%, #3D2416 100%);
+    border-radius: 2px;
+    height: 320px;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 1rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .map-placeholder::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 24px,
+      rgba(212,160,23,0.04) 24px, rgba(212,160,23,0.04) 25px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 24px,
+      rgba(212,160,23,0.04) 24px, rgba(212,160,23,0.04) 25px
+    );
+  }
+
+  .map-pin { font-size: 2.5rem; position: relative; z-index: 1; }
+
+  .map-address {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: rgba(245,240,232,0.7);
+    font-weight: 300;
+    font-style: italic;
+    position: relative; z-index: 1;
+  }
+
+  .map-btn {
+    position: relative; z-index: 1;
+    margin-top: 0.5rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark-brown);
+    padding: 4rem 2rem 2rem;
+    border-top: 1px solid rgba(212,160,23,0.15);
+  }
+
+  .footer-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem;
+    margin-bottom: 3rem;
+  }
+
+  .footer-brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+
+  .footer-brand-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    color: rgba(245,240,232,0.4);
+    font-style: italic;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-brand p {
+    font-size: 0.88rem;
+    color: rgba(245,240,232,0.5);
+    line-height: 1.7;
+    max-width: 300px;
+  }
+
+  .footer-col h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+  }
+
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .footer-col ul li a {
+    color: rgba(245,240,232,0.65);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+
+  .footer-col ul li a:hover { color: var(--gold); }
+
+  .footer-bottom {
+    max-width: 1100px; margin: 0 auto;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(245,240,232,0.08);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.78rem;
+    color: rgba(245,240,232,0.3);
+    flex-wrap: wrap; gap: 0.5rem;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 0 1.5rem; }
+    .nav-links { display: none; }
+    .nav-burger { display: flex; }
+
+    .nav-links.open {
+      display: flex;
+      position: fixed; top: var(--nav-h); left: 0; right: 0;
+      background: rgba(26,16,8,0.98);
+      flex-direction: column;
+      gap: 0;
+      padding: 1rem 0;
+    }
+
+    .nav-links.open li a {
+      display: block;
+      padding: 0.9rem 2rem;
+      border-bottom: 1px solid rgba(245,240,232,0.06);
+    }
+
+    .concept-grid,
+    .restaurant-grid,
+    .resa-grid,
+    .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+
+    .plats-grid { grid-template-columns: 1fr; }
+    .avis-grid { grid-template-columns: 1fr; }
+    .menu-items { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+
+    .form-row { grid-template-columns: 1fr; }
+
+    section { padding: 4rem 1.5rem; }
+  }
+
+  @media (max-width: 600px) {
+    .hero-actions { flex-direction: column; align-items: center; }
+    .concept-stats { gap: 1.5rem; }
+    .equipe-grid { grid-template-columns: 1fr 1fr; }
+    .galerie { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .gal-img:first-child { grid-column: 1 / 3; }
+    .gal-img:nth-child(5) { grid-column: 1 / 3; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav id="main-nav">
+  <a href="#accueil" class="nav-logo">Le Bistrot <span>Fictif</span></a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#concept">Le concept</a></li>
+    <li><a href="#carte">Notre carte</a></li>
+    <li><a href="#restaurant">Le restaurant</a></li>
+    <li><a href="#avis">Avis</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#reservation" class="nav-cta">Réserver</a></li>
+  </ul>
+  <div class="nav-burger" id="burger" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="accueil">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Cuisine bistronomique · Paris</p>
+    <h1 class="hero-title">Le Bistrot<br><em>Fictif</em></h1>
+    <p class="hero-subtitle">L'art de la cuisine de marché dans un cadre chaleureux</p>
+    <div class="hero-actions">
+      <a href="#reservation" class="btn-primary">Réserver une table</a>
+      <a href="#carte" class="btn-outline">Découvrir la carte</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Défiler</div>
+</section>
+
+<!-- CONCEPT -->
+<section id="concept">
+  <div class="container">
+    <div class="concept-grid">
+      <div class="concept-img">
+        <div class="concept-img-inner">🍽️</div>
+        <div class="concept-img-decoration"></div>
+      </div>
+      <div class="concept-text reveal">
+        <span class="section-label">Notre philosophie</span>
+        <h2 class="section-title">Une cuisine sincère,<br>ancrée dans le terroir</h2>
+        <div class="section-divider"></div>
+        <p>Au Bistrot Fictif, nous croyons que la grande cuisine commence au marché. Chaque matin, notre chef parcourt les étals pour sélectionner les meilleurs produits de saison, issus de producteurs locaux avec qui nous entretenons des liens de confiance depuis des années.</p>
+        <p>Notre cuisine bistronomique marie la générosité populaire du bistrot traditionnel à la précision et à la créativité de la gastronomie moderne. Ici, l'excellence ne rime pas avec austérité — chaque plat est conçu pour être partagé et apprécié dans la joie.</p>
+        <div class="concept-stats">
+          <div class="stat-item">
+            <span class="stat-num">2018</span>
+            <span class="stat-label">Fondé en</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">18</span>
+            <span class="stat-label">Producteurs</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">4.8★</span>
+            <span class="stat-label">Note Google</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATS PHARES -->
+<section id="plats-phares">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <span class="section-label">Sélection du chef</span>
+      <h2 class="section-title" style="color:var(--cream)">Les plats du moment</h2>
+      <div class="section-divider center"></div>
+    </div>
+    <div class="plats-grid">
+      <div class="plat-card reveal">
+        <div class="plat-card-img img1">🥩</div>
+        <div class="plat-card-body">
+          <span class="plat-badge">Plat signature</span>
+          <p class="plat-name">Filet de bœuf Rossini</p>
+          <p class="plat-desc">Bœuf charolais, escalope de foie gras poêlée, truffe noire, jus corsé au Madère</p>
+          <p class="plat-price">38 €</p>
+        </div>
+      </div>
+      <div class="plat-card reveal" style="transition-delay:0.15s">
+        <div class="plat-card-img img2">🐟</div>
+        <div class="plat-card-body">
+          <span class="plat-badge">Nouveauté</span>
+          <p class="plat-name">Saint-Jacques rôties</p>
+          <p class="plat-desc">Noix de Saint-Jacques, velouté de topinambour, huile de truffe blanche, chapelure dorée</p>
+          <p class="plat-price">32 €</p>
+        </div>
+      </div>
+      <div class="plat-card reveal" style="transition-delay:0.3s">
+        <div class="plat-card-img img3">🍰</div>
+        <div class="plat-card-body">
+          <span class="plat-badge">Dessert phare</span>
+          <p class="plat-name">Soufflé Grand Marnier</p>
+          <p class="plat-desc">Soufflé chaud à l'orange, sorbet mandarine, tuile caramélisée aux agrumes</p>
+          <p class="plat-price">14 €</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CARTE -->
+<section id="carte">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <span class="section-label">Notre carte</span>
+      <h2 class="section-title">Une cuisine de saison</h2>
+      <div class="section-divider center"></div>
+    </div>
+
+    <div class="menu-tabs reveal">
+      <button class="menu-tab active" onclick="switchTab('entrees', this)">Entrées</button>
+      <button class="menu-tab" onclick="switchTab('plats', this)">Plats</button>
+      <button class="menu-tab" onclick="switchTab('desserts', this)">Desserts</button>
+      <button class="menu-tab" onclick="switchTab('vins', this)">Vins</button>
+      <button class="menu-tab" onclick="switchTab('boissons', this)">Boissons</button>
+    </div>
+
+    <!-- ENTRÉES -->
+    <div class="menu-category active" id="tab-entrees">
+      <div class="menu-items">
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Foie gras maison</p>
+            <p class="menu-item-desc">Mi-cuit, chutney de figues, brioche dorée, fleur de sel de Guérande</p>
+            <div class="menu-item-badges"><span class="badge badge-sg">Sans gluten</span></div>
+          </div>
+          <span class="menu-item-price">22 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Velouté de champignons</p>
+            <p class="menu-item-desc">Crème légère, huile de truffe, copeaux de parmesan 24 mois, mousse de lait</p>
+            <div class="menu-item-badges"><span class="badge badge-veg">Végétarien</span></div>
+          </div>
+          <span class="menu-item-price">16 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Carpaccio de Saint-Jacques</p>
+            <p class="menu-item-desc">Noix fraîches, zestes de citron vert, huile d'olive vierge extra, ciboulette</p>
+            <div class="menu-item-badges"><span class="badge badge-sg">Sans gluten</span></div>
+          </div>
+          <span class="menu-item-price">24 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Œuf parfait, mousseline de petits pois</p>
+            <p class="menu-item-desc">Œuf cuit à 63°C, écrasé de petits pois menthe, lard paysan croustillant</p>
+            <div class="menu-item-badges"></div>
+          </div>
+          <span class="menu-item-price">17 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Gaspacho tomates heritage</p>
+            <p class="menu-item-desc">Tomates de variétés anciennes, basilic frais, croûtons à l'ail, huile d'olive</p>
+            <div class="menu-item-badges"><span class="badge badge-veg">Végétarien</span><span class="badge badge-sg">Sans gluten</span></div>
+          </div>
+          <span class="menu-item-price">14 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Tartare de thon rouge</p>
+            <p class="menu-item-desc">Avocat, mangue, gingembre frais, sésame torréfié, sauce soja citronnée</p>
+            <div class="menu-item-badges"><span class="badge badge-ep">Épicé</span></div>
+          </div>
+          <span class="menu-item-price">21 €</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLATS -->
+    <div class="menu-category" id="tab-plats">
+      <div class="menu-items">
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Filet de bœuf Rossini</p>
+            <p class="menu-item-desc">Bœuf charolais, foie gras poêlé, truffe noire, jus au Madère</p>
+            <div class="menu-item-badges"><span class="badge badge-sg">Sans gluten</span></div>
+          </div>
+          <span class="menu-item-price">38 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Lotte rôtie au chorizo</p>
+            <p class="menu-item-desc">Queue de lotte, chorizo artisanal, encre de seiche, purée vitelotte</p>
+            <div class="menu-item-badges"></div>
+          </div>
+          <span class="menu-item-price">34 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Risotto aux cèpes</p>
+            <p class="menu-item-desc">Riz carnaroli, cèpes frais, parmesan AOP, beurre noisette, herbes du jardin</p>
+            <div class="menu-item-badges"><span class="badge badge-veg">Végétarien</span></div>
+          </div>
+          <span class="menu-item-price">28 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Canard à la bigarade</p>
+            <p class="menu-item-desc">Magret cuit rosé, sauce orange amère, carottes glacées au miel, pommes fondantes</p>
+            <div class="menu-item-badges"></div>
+          </div>
+          <span class="menu-item-price">29 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Daube de joue de bœuf</p>
+            <p class="menu-item-desc">Mijotée 6h au vin rouge, gremolata, polenta crémeuse, olives taggiasches</p>
+            <div class="menu-item-badges"></div>
+          </div>
+          <span class="menu-item-price">26 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Curry de légumes de saison</p>
+            <p class="menu-item-desc">Légumes du marché, lait de coco, curry maison, riz basmati, coriandre</p>
+            <div class="menu-item-badges"><span class="badge badge-veg">Végétarien</span><span class="badge badge-ep">Épicé</span></div>
+          </div>
+          <span class="menu-item-price">22 €</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESSERTS -->
+    <div class="menu-category" id="tab-desserts">
+      <div class="menu-items">
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Soufflé Grand Marnier</p>
+            <p class="menu-item-desc">Soufflé chaud, sorbet mandarine, tuile caramélisée (à commander en début de repas)</p>
+            <div class="menu-item-badges"></div>
+          </div>
+          <span class="menu-item-price">14 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Tarte fine aux pommes</p>
+            <p class="menu-item-desc">Pommes Golden caramélisées, pâte feuilletée maison, glace caramel beurre salé</p>
+            <div class="menu-item-badges"><span class="badge badge-veg">Végétarien</span></div>
+          </div>
+          <span class="menu-item-price">11 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Fondant chocolat amer</p>
+            <p class="menu-item-desc">Cœur coulant Valrhona 72%, crème glacée vanille Bourbon, amandes torréfiées</p>
+            <div class="menu-item-badges"><span class="badge badge-veg">Végétarien</span></div>
+          </div>
+          <span class="menu-item-price">12 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Fromages affinés</p>
+            <p class="menu-item-desc">Sélection de 3 fromages affinés, confiture de cerises, pain de campagne grillé</p>
+            <div class="menu-item-badges"></div>
+          </div>
+          <span class="menu-item-price">16 €</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- VINS -->
+    <div class="menu-category" id="tab-vins">
+      <div class="menu-items">
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Sancerre Blanc · Domaine Vacheron</p>
+            <p class="menu-item-desc">Loire · Sauvignon Blanc · Notes minérales, agrumes, bouche fraîche</p>
+          </div>
+          <span class="menu-item-price">52 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Pomerol · Château La Croix du Casse</p>
+            <p class="menu-item-desc">Bordeaux · Merlot · Robe rubis, fruits noirs, tanins soyeux</p>
+          </div>
+          <span class="menu-item-price">78 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Bourgogne Blanc · Louis Jadot</p>
+            <p class="menu-item-desc">Burgundy · Chardonnay · Beurré, noisette, finale élégante</p>
+          </div>
+          <span class="menu-item-price">44 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Côtes du Rhône · Domaine Gramenon</p>
+            <p class="menu-item-desc">Vallée du Rhône · Grenache · Naturel, épicé, fruits rouges</p>
+          </div>
+          <span class="menu-item-price">38 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Champagne · Billecart-Salmon Brut</p>
+            <p class="menu-item-desc">Montagne de Reims · Assemblage · Frais, brioché, bulles fines</p>
+          </div>
+          <span class="menu-item-price">98 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Coupe de Champagne</p>
+            <p class="menu-item-desc">Billecart-Salmon Brut · Servie bien fraîche</p>
+          </div>
+          <span class="menu-item-price">18 €</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOISSONS -->
+    <div class="menu-category" id="tab-boissons">
+      <div class="menu-items">
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Eau minérale · Evian ou Perrier</p>
+            <p class="menu-item-desc">50cl · Plate ou gazeuse</p>
+            <div class="menu-item-badges"><span class="badge badge-veg">Végétarien</span><span class="badge badge-sg">Sans gluten</span></div>
+          </div>
+          <span class="menu-item-price">5 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Cocktail maison du jour</p>
+            <p class="menu-item-desc">Création originale de notre barman, fruits de saison, herbes fraîches</p>
+          </div>
+          <span class="menu-item-price">12 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Jus de fruits frais pressés</p>
+            <p class="menu-item-desc">Orange, citron, pamplemousse · selon arrivage</p>
+            <div class="menu-item-badges"><span class="badge badge-veg">Végétarien</span><span class="badge badge-sg">Sans gluten</span></div>
+          </div>
+          <span class="menu-item-price">7 €</span>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <p class="menu-item-name">Café · Espresso ou Allongé</p>
+            <p class="menu-item-desc">Grains Arabica Grand Cru, torréfaction artisanale</p>
+            <div class="menu-item-badges"><span class="badge badge-veg">Végétarien</span></div>
+          </div>
+          <span class="menu-item-price">4 €</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="text-align:center; margin-top:3rem;">
+      <p style="font-family:'Cormorant Garamond',serif; font-size:0.9rem; color:var(--text-muted); font-style:italic;">
+        🌱 Végétarien &nbsp;·&nbsp; 🌾 Sans Gluten &nbsp;·&nbsp; 🌶 Épicé &nbsp;·&nbsp; Tous nos plats peuvent être adaptés aux allergies – merci de nous en informer.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- LE RESTAURANT -->
+<section id="restaurant">
+  <div class="container">
+    <div class="restaurant-grid">
+      <div class="reveal">
+        <span class="section-label">Notre histoire</span>
+        <h2 class="section-title">Un lieu de vie,<br>une histoire humaine</h2>
+        <div class="section-divider"></div>
+        <div class="histoire-text">
+          <p>Le Bistrot Fictif est né d'un rêve simple : créer un endroit où l'on mange vraiment bien, sans chichi, dans une atmosphère qui invite à se poser et à prendre le temps. Fondé en 2018 par Marc Delacour et Sophie Lebrun, le restaurant a rapidement conquis le cœur des Parisiens.</p>
+          <p>Notre salle aux pierres apparentes et aux tables en chêne massif raconte une histoire d'authenticité. Chaque détail – des luminaires à la patine dorée aux banquettes en cuir vieilli – a été pensé pour vous accueillir comme à la maison, en mieux.</p>
+        </div>
+        <div class="equipe-grid">
+          <div class="chef-card">
+            <div class="chef-avatar av1">👨‍🍳</div>
+            <p class="chef-name">Marc Delacour</p>
+            <p class="chef-role">Chef exécutif</p>
+          </div>
+          <div class="chef-card">
+            <div class="chef-avatar av2">👩‍💼</div>
+            <p class="chef-name">Sophie Lebrun</p>
+            <p class="chef-role">Directrice & Sommelière</p>
+          </div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.2s">
+        <div class="galerie">
+          <div class="gal-img">🍽️</div>
+          <div class="gal-img">🥂</div>
+          <div class="gal-img">🌿</div>
+          <div class="gal-img">🕯️</div>
+          <div class="gal-img">🍷</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AVIS -->
+<section id="avis">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <span class="section-label">Ce qu'ils en disent</span>
+      <h2 class="section-title">Vos avis nous touchent</h2>
+      <div class="section-divider center"></div>
+    </div>
+    <div class="avis-global reveal">
+      <div class="avis-score">4.8</div>
+      <div>
+        <div class="avis-stars">⭐⭐⭐⭐⭐</div>
+        <p class="avis-count">Note moyenne sur 347 avis</p>
+      </div>
+    </div>
+    <div class="avis-grid">
+      <div class="avis-card reveal">
+        <div class="avis-header">
+          <div class="avis-avatar">ML</div>
+          <div>
+            <span class="avis-name">Marie L.</span>
+            <div class="avis-stars-small">⭐⭐⭐⭐⭐</div>
+            <span class="avis-date">Mars 2024</span>
+          </div>
+        </div>
+        <p class="avis-text">"Une expérience culinaire exceptionnelle. Le filet de bœuf Rossini était d'une perfection absolue, et l'accueil d'une chaleur rare. Ce bistrot est devenu notre adresse parisienne de cœur."</p>
+        <div class="avis-platform">🔵 Google · Certifié</div>
+      </div>
+      <div class="avis-card reveal" style="transition-delay:0.15s">
+        <div class="avis-header">
+          <div class="avis-avatar">TD</div>
+          <div>
+            <span class="avis-name">Thomas D.</span>
+            <div class="avis-stars-small">⭐⭐⭐⭐⭐</div>
+            <span class="avis-date">Février 2024</span>
+          </div>
+        </div>
+        <p class="avis-text">"La carte des vins est une œuvre d'art. Sophie a su nous guider vers des bouteilles incroyables. Les saint-jacques étaient sublimes. On reviendra sans hésiter."</p>
+        <div class="avis-platform">🦉 TripAdvisor · Certifié</div>
+      </div>
+      <div class="avis-card reveal" style="transition-delay:0.3s">
+        <div class="avis-header">
+          <div class="avis-avatar">CM</div>
+          <div>
+            <span class="avis-name">Céline M.</span>
+            <div class="avis-stars-small">⭐⭐⭐⭐⭐</div>
+            <span class="avis-date">Janvier 2024</span>
+          </div>
+        </div>
+        <p class="avis-text">"Dîner d'anniversaire mémorable ! L'équipe a tout fait pour rendre le moment magique. Le soufflé commandé en début de repas était spectaculaire. Merci pour cette belle soirée."</p>
+        <div class="avis-platform">🔵 Google · Certifié</div>
+      </div>
+    </div>
+    <div class="reveal" style="text-align:center; margin-top:2.5rem;">
+      <a href="#avis-form" class="btn-outline" style="border-color:rgba(245,240,232,0.3); color:var(--cream)">Laisser un avis</a>
+    </div>
+  </div>
+</section>
+
+<!-- RÉSERVATION -->
+<section id="reservation">
+  <div class="container">
+    <div class="resa-grid">
+      <div class="reveal">
+        <span class="section-label">Réserver une table</span>
+        <h2 class="section-title">Venez nous rejoindre</h2>
+        <div class="section-divider"></div>
+        <h3 class="resa-info"><em>"La bonne table est celle où l'on revient toujours avec le même plaisir, avec des gens qui comptent."</em></h3>
+        <table class="horaires-table">
+          <tr><td>Lundi – Vendredi</td><td>12h00 – 14h30<br>19h30 – 22h30</td></tr>
+          <tr><td>Samedi</td><td>12h00 – 15h00<br>19h00 – 23h00</td></tr>
+          <tr class="closed"><td>Dimanche</td><td>Fermé</td></tr>
+          <tr class="closed"><td>Jours fériés</td><td>Nous consulter</td></tr>
+        </table>
+        <div style="margin-top:1.5rem; padding:1rem 1.25rem; background:var(--cream); border:1px solid var(--border); border-radius:2px;">
+          <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.6;">
+            📞 Réservation également par téléphone :<br>
+            <a href="tel:+33142000000" style="color:var(--amber); font-weight:500; text-decoration:none;">+33 (0)1 42 00 00 00</a>
+          </p>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.2s">
+        <div class="resa-form" id="resa-form-container">
+          <div id="form-fields">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Prénom</label>
+                <input type="text" placeholder="Marie" id="f-prenom">
+              </div>
+              <div class="form-group">
+                <label>Nom</label>
+                <input type="text" placeholder="Dupont" id="f-nom">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Téléphone</label>
+                <input type="tel" placeholder="+33 6 00 00 00 00" id="f-tel">
+              </div>
+              <div class="form-group">
+                <label>E-mail</label>
+                <input type="email" placeholder="marie@email.com" id="f-email">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Date</label>
+                <input type="date" id="f-date">
+              </div>
+              <div class="form-group">
+                <label>Heure</label>
+                <select id="f-heure">
+                  <option value="">Choisir</option>
+                  <optgroup label="Déjeuner">
+                    <option>12h00</option><option>12h30</option>
+                    <option>13h00</option><option>13h30</option>
+                  </optgroup>
+                  <optgroup label="Dîner">
+                    <option>19h30</option><option>20h00</option>
+                    <option>20h30</option><option>21h00</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Nombre de couverts</label>
+              <select id="f-couverts">
+                <option>1 personne</option>
+                <option>2 personnes</option>
+                <option selected>3 personnes</option>
+                <option>4 personnes</option>
+                <option>5 personnes</option>
+                <option>6 personnes</option>
+                <option>7 personnes ou plus – nous contacter</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Message (allergies, occasion spéciale…)</label>
+              <textarea placeholder="Anniversaire, allergie aux fruits à coque, table en terrasse..."></textarea>
+            </div>
+            <button class="btn-primary form-submit" onclick="submitResa()">Confirmer la réservation</button>
+          </div>
+          <div class="form-success" id="form-success">
+            <div class="check">✓</div>
+            <h4>Réservation confirmée !</h4>
+            <p>Un e-mail de confirmation vous a été envoyé. Nous avons hâte de vous accueillir.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT & ACCÈS -->
+<section id="contact">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <span class="section-label">Nous trouver</span>
+      <h2 class="section-title">Contact & Accès</h2>
+      <div class="section-divider center"></div>
+    </div>
+    <div class="contact-grid" style="margin-top:3rem">
+      <div class="contact-details reveal">
+        <div class="item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <span class="contact-label">Adresse</span>
+            <p class="contact-value">12, rue de la Gaîté<br>75014 Paris, France</p>
+          </div>
+        </div>
+        <div class="item">
+          <div class="contact-icon">📞</div>
+          <div>
+            <span class="contact-label">Téléphone</span>
+            <a href="tel:+33142000000" class="contact-value">+33 (0)1 42 00 00 00</a>
+          </div>
+        </div>
+        <div class="item">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <span class="contact-label">E-mail</span>
+            <a href="mailto:bonjour@lebistrotfictif.fr" class="contact-value">bonjour@lebistrotfictif.fr</a>
+          </div>
+        </div>
+        <div class="item">
+          <div class="contact-icon">🚇</div>
+          <div>
+            <span class="contact-label">Accès</span>
+            <p class="contact-value">Métro Gaîté (ligne 13)<br>Bus 28, 88 · Parking Edgar Quinet</p>
+          </div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.2s">
+        <div class="map-placeholder">
+          <div class="map-pin">📍</div>
+          <p class="map-address">Le Bistrot Fictif<br>12, rue de la Gaîté · 75014 Paris</p>
+          <a href="https://maps.google.com/?q=12+rue+de+la+Gaite+75014+Paris" target="_blank" class="btn-primary map-btn" style="font-size:0.8rem; padding:0.65rem 1.5rem;">Obtenir l'itinéraire →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <p class="footer-brand-name">Le Bistrot Fictif</p>
+      <p class="footer-brand-tagline">Cuisine bistronomique, Paris 14e</p>
+      <p>Un lieu de vie pensé pour les amoureux de la bonne table. Produits locaux, saison respectée, convivialité garantie.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="#accueil">Accueil</a></li>
+        <li><a href="#carte">Notre carte</a></li>
+        <li><a href="#restaurant">Le restaurant</a></li>
+        <li><a href="#avis">Avis clients</a></li>
+        <li><a href="#contact">Contact & Accès</a></li>
+        <li><a href="#reservation">Réservation</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Infos pratiques</h4>
+      <ul>
+        <li><a href="#">Menus & formules</a></li>
+        <li><a href="#">Privatisation</a></li>
+        <li><a href="#">Carte cadeau</a></li>
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">Politique de confidentialité</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 Le Bistrot Fictif · Tous droits réservés</span>
+    <span>Site réalisé par <strong style="color:rgba(245,240,232,0.5)">Agence Démo Portfolio</strong></span>
+  </div>
+</footer>
+
+<script>
+function toggleNav() {
+  const links = document.getElementById('nav-links');
+  links.classList.toggle('open');
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.menu-category').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.menu-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function submitResa() {
+  const prenom = document.getElementById('f-prenom').value;
+  const nom = document.getElementById('f-nom').value;
+  const date = document.getElementById('f-date').value;
+  const heure = document.getElementById('f-heure').value;
+  if (!prenom || !nom || !date || !heure) {
+    alert('Merci de remplir au moins votre nom, prénom, la date et l\'heure.');
+    return;
+  }
+  document.getElementById('form-fields').style.display = 'none';
+  document.getElementById('form-success').style.display = 'block';
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+const today = new Date().toISOString().split('T')[0];
+document.getElementById('f-date').min = today;
+document.getElementById('f-date').value = today;
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const id = a.getAttribute('href');
+    if (id === '#') return;
+    const el = document.querySelector(id);
+    if (el) {
+      e.preventDefault();
+      const offset = el.getBoundingClientRect().top + window.scrollY - 72;
+      window.scrollTo({ top: offset, behavior: 'smooth' });
+      document.getElementById('nav-links').classList.remove('open');
+    }
+  });
+});
+</script>
+</body>
+</html>
