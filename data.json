@@ -1,0 +1,23 @@
+{
+  "plats": [
+    {
+      "nom": "Tartare de bœuf façon bistrot",
+      "prix": "18",
+      "desc": "Bœuf haché à la minute, câpres, cornichons, jaune d'œuf mollet, chips de pain noir.",
+      "img": ""
+    },
+    {
+      "nom": "Filet de sole meunière",
+      "prix": "26",
+      "desc": "Sole de ligne, beurre noisette citronnée, haricots verts croquants et amandes grillées.",
+      "img": ""
+    },
+    {
+      "nom": "Côte de veau rôtie",
+      "prix": "32",
+      "desc": "Veau fermier Label Rouge, jus de veau réduit, gnocchis à la parisienne et champignons des bois.",
+      "img": ""
+    }
+  ],
+  "reservations": []
+}
