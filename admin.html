@@ -243,154 +243,219 @@
     </table>
 
     <h2>Modifier les Plats Signatures</h2>
+    <button class="btn" onclick="addPlat()" style="margin-bottom:16px">+ Ajouter un plat</button>
     <div id="plats-list" class="grid-plats"></div>
 
 </div>
 
 <script>
-    let plats = JSON.parse(localStorage.getItem('plats_jour')) || [];
-    let resas = JSON.parse(localStorage.getItem('reservations_data')) || [];
+// ─────────────────────────────────────────────
+//  CONFIG — mot de passe identique à ADMIN_SECRET
+//  dans les variables d'environnement Netlify
+// ─────────────────────────────────────────────
+let ADMIN_SECRET = ''; // rempli après connexion
+let siteData = { plats: [], reservations: [] };
 
-    // --- RENDU DES PLATS AVEC MODIFICATION TEXTE ---
-    function renderPlats() {
-        const container = document.getElementById('plats-list');
-        if (plats.length === 0) {
-            container.innerHTML = "<p>Aucun plat configuré. Ils apparaîtront ici une fois initialisés sur l'index.</p>";
-            return;
-        }
-        container.innerHTML = plats.map((p, i) => `
-            <div class="card-plat">
-                <img src="${p.img}" class="img-preview" id="prev-${i}" alt="Aperçu plat">
-                <input type="file" onchange="updateImage(event, ${i})" style="font-size: 0.7rem">
-                
-                <label>Nom du plat :</label>
-                <input type="text" value="${p.nom}" id="nom-${i}" placeholder="Ex: Entrecôte grillée">
-                
-                <label>Prix (€) :</label>
-                <input type="text" value="${p.prix}" id="prix-${i}" placeholder="Ex: 24">
-                
-                <label>Description :</label>
-                <textarea id="desc-${i}" rows="3" placeholder="Description du plat...">${p.desc}</textarea>
-                
-                <button class="btn btn-save" onclick="savePlat(${i})">Enregistrer les modifs</button>
-            </div>
-</div>
-        `).join('');
-    }
+// ─── AUTHENTIFICATION ───────────────────────
+function checkAdmin() {
+  const pass = document.getElementById('admin-pass').value;
+  if (!pass) return;
+  ADMIN_SECRET = pass;
+  loadAllData(); // on vérifie en chargeant
+}
 
-    function savePlat(i) {
-        plats[i].nom = document.getElementById(`nom-${i}`).value;
-        plats[i].prix = document.getElementById(`prix-${i}`).value;
-        plats[i].desc = document.getElementById(`desc-${i}`).value;
-        
-        localStorage.setItem('plats_jour', JSON.stringify(plats));
-        alert("Modifications enregistrées !");
-        renderPlats();
-    }
+document.getElementById('admin-pass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkAdmin();
+});
 
-    function updateImage(event, i) {
-        const file = event.target.files[0];
-        if (!file) return;
+// ─── CHARGEMENT DONNÉES ─────────────────────
+async function loadAllData() {
+  try {
+    const res = await fetch('/.netlify/functions/get-data');
+    if (!res.ok) throw new Error('Erreur réseau');
+    siteData = await res.json();
+    siteData.plats = siteData.plats || [];
+    siteData.reservations = siteData.reservations || [];
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                canvas.width = 1000; canvas.height = 700; // Format fixe professionnel
-                const ctx = canvas.getContext('2d');
-                
-                // Calcul du ratio pour l'effet "cover" (remplissage sans déformation)
-                const ratio = Math.max(canvas.width / img.width, canvas.height / img.height);
-                const x = (canvas.width - img.width * ratio) / 2;
-                const y = (canvas.height - img.height * ratio) / 2;
-                
-                ctx.fillStyle = "#FFFFFF";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(img, x, y, img.width * ratio, img.height * ratio);
-                
-                plats[i].img = canvas.toDataURL('image/jpeg', 0.8);
-                document.getElementById(`prev-${i}`).src = plats[i].img;
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
+    // Connexion réussie — on affiche le panel
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
 
-    // --- RENDU DU PLANNING ---
-    function renderPlanning() {
-        const body = document.getElementById('resas-body');
-        
-        // Tri par date et heure
-        resas.sort((a,b) => new Date(a.date + 'T' + a.heure) - new Date(b.date + 'T' + b.heure));
-        
-        body.innerHTML = resas.map((r, i) => {
-            // Sécurité pour le numéro de téléphone undefined
-            const displayTel = r.tel && r.tel !== "undefined" ? r.tel : "Non renseigné";
-            const telLink = r.tel && r.tel !== "undefined" ? `<a href="tel:${r.tel}">${r.tel}</a>` : `<span class="no-tel">${displayTel}</span>`;
-
-            return `
-                <tr>
-                    <td>${r.date} à <strong>${r.heure}</strong></td>
-                    <td>${r.prenom} ${r.nom ? r.nom.toUpperCase() : ''}</td>
-                    <td>${telLink}</td>
-                    <td>${r.couverts} pers.</td>
-                    <td><button onclick="deleteResa(${i})" style="color:red; border:none; background:none; cursor:pointer;">Supprimer</button></td>
-                </tr>
-            `;
-        }).join('');
-    }
-
-    function deleteResa(i) {
-        if(confirm("Voulez-vous vraiment supprimer cette réservation ?")) {
-            resas.splice(i, 1);
-            localStorage.setItem('reservations_data', JSON.stringify(resas));
-            renderPlanning();
-        }
-    }
-
-    // Initialisation au chargement
     renderPlats();
     renderPlanning();
-	// Générer les couverts (1 à 12)
-const selectCouverts = document.getElementById("resa-couverts");
-for(let i = 1; i <= 12; i++) {
-    selectCouverts.innerHTML += `<option value="${i}">${i} couvert${i>1?'s':''}</option>`;
-}
-
-// Ajouter réservation
-function addResa() {
-    const resa = {
-        date: document.getElementById('resa-date').value,
-        heure: document.getElementById('resa-heure').value,
-        prenom: document.getElementById('resa-prenom').value,
-        nom: document.getElementById('resa-nom').value,
-        tel: document.getElementById('resa-tel').value,
-        couverts: document.getElementById('resa-couverts').value
-    };
-
-    if(!resa.date || !resa.heure || !resa.prenom) {
-        alert("Merci de remplir les champs obligatoires");
-        return;
-    }
-
-    resas.push(resa);
-    localStorage.setItem('reservations_data', JSON.stringify(resas));
-
-    renderPlanning();
-    alert("Réservation ajoutée !");
-}
-function checkAdmin(){
-  const pass = document.getElementById('admin-pass').value;
-
-  const correctPassword = "admin123"; // 👉 change ici ton mdp
-
-  if(pass === correctPassword){
-    document.getElementById('admin-login').style.display = "none";
-    document.getElementById('admin-panel').style.display = "block";
-  } else {
-    document.getElementById('login-error').style.display = "block";
+    initCouverts();
+  } catch(e) {
+    document.getElementById('login-error').style.display = 'block';
+    ADMIN_SECRET = '';
   }
+}
+
+// ─── SAUVEGARDE GLOBALE ──────────────────────
+async function saveData(successMsg) {
+  const res = await fetch('/.netlify/functions/save-data', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-admin-secret': ADMIN_SECRET,
+    },
+    body: JSON.stringify(siteData, null, 2),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    if (res.status === 401) {
+      alert('Mot de passe incorrect ou expiré.');
+    } else {
+      alert('Erreur lors de la sauvegarde : ' + (err.error || res.status));
+    }
+    return false;
+  }
+
+  if (successMsg) alert(successMsg);
+  return true;
+}
+
+// ─── PLATS ───────────────────────────────────
+function renderPlats() {
+  const container = document.getElementById('plats-list');
+  if (siteData.plats.length === 0) {
+    container.innerHTML = '<p style="color:#999">Aucun plat. Cliquez sur "Ajouter un plat" ci-dessous.</p>';
+    return;
+  }
+
+  container.innerHTML = siteData.plats.map((p, i) => `
+    <div class="card-plat">
+      <img src="${p.img || 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22200%22><rect width=%22400%22 height=%22200%22 fill=%22%23eee%22/><text x=%2250%%22 y=%2250%%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2240%22>🍽️</text></svg>'}"
+           class="img-preview" id="prev-${i}" alt="Aperçu plat">
+
+      <label style="font-size:0.75rem;color:#666">Changer la photo :</label>
+      <input type="file" accept="image/*" onchange="updateImage(event, ${i})" style="font-size: 0.75rem; margin-bottom:8px">
+
+      <label>Nom du plat :</label>
+      <input type="text" value="${p.nom}" id="nom-${i}" placeholder="Ex: Entrecôte grillée">
+
+      <label>Prix (€) :</label>
+      <input type="text" value="${p.prix}" id="prix-${i}" placeholder="Ex: 24">
+
+      <label>Description :</label>
+      <textarea id="desc-${i}" rows="3" placeholder="Description du plat...">${p.desc}</textarea>
+
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn btn-save" style="flex:1" onclick="savePlat(${i})">💾 Enregistrer</button>
+        <button class="btn" style="background:#c0392b;color:white;border-color:#c0392b;flex:0 0 auto" onclick="deletePlat(${i})">🗑</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function savePlat(i) {
+  siteData.plats[i].nom  = document.getElementById(`nom-${i}`).value;
+  siteData.plats[i].prix = document.getElementById(`prix-${i}`).value;
+  siteData.plats[i].desc = document.getElementById(`desc-${i}`).value;
+  await saveData('✅ Plat enregistré !');
+}
+
+async function deletePlat(i) {
+  if (!confirm('Supprimer ce plat du site ?')) return;
+  siteData.plats.splice(i, 1);
+  await saveData();
+  renderPlats();
+}
+
+function addPlat() {
+  siteData.plats.push({ nom: 'Nouveau plat', prix: '0', desc: '', img: '' });
+  renderPlats();
+  document.getElementById('plats-list').lastElementChild.scrollIntoView({ behavior: 'smooth' });
+}
+
+function updateImage(event, i) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1000; canvas.height = 700;
+      const ctx = canvas.getContext('2d');
+      const ratio = Math.max(canvas.width / img.width, canvas.height / img.height);
+      const x = (canvas.width - img.width * ratio) / 2;
+      const y = (canvas.height - img.height * ratio) / 2;
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, x, y, img.width * ratio, img.height * ratio);
+      siteData.plats[i].img = canvas.toDataURL('image/jpeg', 0.8);
+      document.getElementById(`prev-${i}`).src = siteData.plats[i].img;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ─── RÉSERVATIONS ────────────────────────────
+function renderPlanning() {
+  const body = document.getElementById('resas-body');
+  const resas = [...siteData.reservations];
+  resas.sort((a, b) => new Date(a.date + 'T' + (a.heure||'00:00')) - new Date(b.date + 'T' + (b.heure||'00:00')));
+
+  if (resas.length === 0) {
+    body.innerHTML = '<tr><td colspan="5" style="color:#999;text-align:center;padding:20px">Aucune réservation</td></tr>';
+    return;
+  }
+
+  body.innerHTML = resas.map((r, i) => {
+    const displayTel = r.tel && r.tel !== 'undefined' ? r.tel : 'Non renseigné';
+    const telLink = r.tel && r.tel !== 'undefined'
+      ? `<a href="tel:${r.tel}">${r.tel}</a>`
+      : `<span class="no-tel">${displayTel}</span>`;
+    const origIndex = siteData.reservations.indexOf(r);
+    return `
+      <tr>
+        <td>${r.date} à <strong>${r.heure}</strong></td>
+        <td>${r.prenom} ${r.nom ? r.nom.toUpperCase() : ''}</td>
+        <td>${telLink}</td>
+        <td>${r.couverts} pers.</td>
+        <td><button onclick="deleteResa(${origIndex})" style="color:red;border:none;background:none;cursor:pointer;">Supprimer</button></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+async function deleteResa(i) {
+  if (!confirm('Voulez-vous vraiment supprimer cette réservation ?')) return;
+  siteData.reservations.splice(i, 1);
+  const ok = await saveData();
+  if (ok) renderPlanning();
+}
+
+function initCouverts() {
+  const sel = document.getElementById('resa-couverts');
+  sel.innerHTML = '<option value="" disabled selected>Couverts</option>';
+  for (let i = 1; i <= 12; i++) {
+    sel.innerHTML += `<option value="${i}">${i} couvert${i > 1 ? 's' : ''}</option>`;
+  }
+}
+
+async function addResa() {
+  const resa = {
+    id: Date.now(),
+    date:     document.getElementById('resa-date').value,
+    heure:    document.getElementById('resa-heure').value,
+    prenom:   document.getElementById('resa-prenom').value,
+    nom:      document.getElementById('resa-nom').value,
+    tel:      document.getElementById('resa-tel').value,
+    couverts: document.getElementById('resa-couverts').value,
+  };
+
+  if (!resa.date || !resa.heure || !resa.prenom) {
+    alert('Merci de remplir les champs obligatoires (date, heure, prénom)');
+    return;
+  }
+
+  siteData.reservations.push(resa);
+  const ok = await saveData('✅ Réservation ajoutée !');
+  if (ok) renderPlanning();
 }
 </script>
 </body>
