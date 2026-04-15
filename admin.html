@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root { --cream: #F5F0E8; --dark: #1A1008; --gold: #D4A017; --border: rgba(26, 16, 8, 0.15); }
-        body { font-family: 'DM Sans', sans-serif; background: #FAF7F2; color: var(--dark); margin: 0; padding-bottom: 50px; }
+        body { font-family: 'DM Sans', sans-serif; background: linear-gradient(135deg, #e5e0d8 0%, #f2ede4 100%); color: var(--dark); margin: 0; padding-bottom: 50px; }
         header { background: var(--dark); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); }
         .logo { font-family: 'Playfair Display'; color: var(--gold); text-decoration: none; font-size: 1.2rem; }
         .container { max-width: 1100px; margin: 2rem auto; padding: 0 20px; }
@@ -184,6 +184,25 @@
   font-weight:600;
   cursor:pointer;
 }
+.btn-refresh {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-refresh:hover {
+    background: var(--gold);
+    color: var(--dark); /* Inversion des couleurs au survol */
+}
     </style>
 </head>
 <body>
@@ -206,6 +225,9 @@
 
 <header>
     <a href="index.html" class="logo">LE BISTROT FICTIF — ADMIN</a>
+	<button onclick="hardRefresh()" class="btn-refresh">
+  ← Retour et Actualiser
+</button>
     <button class="btn" onclick="location.reload()">Actualiser</button>
 </header>
 <h2 class="admin-title">Ajouter une réservation</h2>
@@ -456,6 +478,16 @@ async function addResa() {
   siteData.reservations.push(resa);
   const ok = await saveData('✅ Réservation ajoutée !');
   if (ok) renderPlanning();
+}
+function hardRefresh() {
+    // 1. On définit l'endroit où on veut retourner (la page précédente ou l'accueil)
+    const destination = document.referrer || 'index.html'; 
+    
+    // 2. On ajoute un "timestamp" pour forcer GitHub/Netlify à ignorer le cache
+    const forceCacheUpdate = "?t=" + new Date().getTime();
+    
+    // 3. On recharge proprement vers la destination
+    window.location.href = destination + forceCacheUpdate;
 }
 </script>
 </body>
