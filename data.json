@@ -19,5 +19,15 @@
       "img": ""
     }
   ],
-  "reservations": []
+  "reservations": [
+    {
+      "id": 1776252547265,
+      "date": "2026-04-16",
+      "heure": "16:31",
+      "prenom": "nathan",
+      "nom": "rousseau",
+      "tel": "0683479229",
+      "couverts": "8"
+    }
+  ]
 }
