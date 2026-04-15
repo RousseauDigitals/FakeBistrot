@@ -7,7 +7,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root { --cream: #F5F0E8; --dark: #1A1008; --gold: #D4A017; --border: rgba(26, 16, 8, 0.15); }
-        body { font-family: 'DM Sans', sans-serif; background: linear-gradient(135deg, #e5e0d8 0%, #f2ede4 100%); color: var(--dark); margin: 0; padding-bottom: 50px; }
+        body { 
+    font-family: 'DM Sans', sans-serif; 
+    /* On utilise un dégradé encore plus doux (plus de gris, moins de blanc) */
+    background: linear-gradient(135deg, #d8d3cd 0%, #e8e4de 100%);
+    
+    /* FIX pour le dégradé sur toute la page */
+    background-attachment: fixed; /* Le fond ne bouge pas quand on scroll */
+    background-size: cover;       /* Le dégradé couvre tout l'écran */
+    min-height: 100vh;           /* Force le fond à faire au moins la taille de l'écran */
+    
+    color: var(--dark); 
+    margin: 0; 
+    padding-bottom: 50px; 
+}
         header { background: var(--dark); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); }
         .logo { font-family: 'Playfair Display'; color: var(--gold); text-decoration: none; font-size: 1.2rem; }
         .container { max-width: 1100px; margin: 2rem auto; padding: 0 20px; }
@@ -227,8 +240,7 @@
     <a href="index.html" class="logo">LE BISTROT FICTIF — ADMIN</a>
 	<button onclick="hardRefresh()" class="btn-refresh">
   ← Retour et Actualiser
-</button>
-    <button class="btn" onclick="location.reload()">Actualiser</button>
+	</button>
 </header>
 <h2 class="admin-title">Ajouter une réservation</h2>
 
