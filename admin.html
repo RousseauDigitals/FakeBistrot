@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root { --cream: #F5F0E8; --dark: #1A1008; --gold: #D4A017; --border: rgba(26, 16, 8, 0.15); }
-        body { font-family: 'DM Sans', sans-serif; background: linear-gradient(135deg, #e5e0d8 0%, #f2ede4 100%); color: var(--dark); margin: 0; padding-bottom: 50px; }
+        body { font-family: 'DM Sans', sans-serif; background: #FAF7F2; color: var(--dark); margin: 0; padding-bottom: 50px; }
         header { background: var(--dark); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); }
         .logo { font-family: 'Playfair Display'; color: var(--gold); text-decoration: none; font-size: 1.2rem; }
         .container { max-width: 1100px; margin: 2rem auto; padding: 0 20px; }
@@ -271,7 +271,7 @@ document.getElementById('admin-pass').addEventListener('keydown', e => {
 // ─── CHARGEMENT DONNÉES ─────────────────────
 async function loadAllData() {
   try {
-    const res = await fetch('/.netlify/functions/get-data');
+    const res = await fetch('/api/get-data');
     if (!res.ok) throw new Error('Erreur réseau');
     siteData = await res.json();
     siteData.plats = siteData.plats || [];
@@ -292,7 +292,7 @@ async function loadAllData() {
 
 // ─── SAUVEGARDE GLOBALE ──────────────────────
 async function saveData(successMsg) {
-  const res = await fetch('/.netlify/functions/save-data', {
+  const res = await fetch('/api/save-data', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
